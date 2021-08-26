@@ -162,7 +162,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public List<Vehicle> searchEveryoneByName(String name){
         List<Vehicle> returnList = new ArrayList<>();
 
-        String queryString = "SELECT * FROM " + VEHICLE_TABLE + " WHERE " + COLUMN_NAME_VEHICLE + " = " + name;
+        String queryString = "SELECT * FROM " + VEHICLE_TABLE + " WHERE " + COLUMN_NAME_VEHICLE + " like '%" + name + "%'";
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
         if (cursor.moveToFirst()){

@@ -1,6 +1,7 @@
 package com.example.fptentrytest;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,7 +33,18 @@ public class MainActivity extends AppCompatActivity {
         binding.rcvDisplace.setAdapter(vehicleAdapter);
         vehicleAdapter.setData(mDataBaseHelper.getEveryOne());
 
+        binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                vehicleAdapter.setData(mDataBaseHelper.searchEveryoneByName(query));
+                return true;
+            }
 
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
 
         binding.btnAddOne.setOnClickListener(new View.OnClickListener() {
             @Override
