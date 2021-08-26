@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">FPTEntryTest</string>
+    <string name="id_vehicle">Mã phương tiện: </string>
+    <string name="name_vehicle">Tên: </string>
+    <string name="type_vehicle">Loại: </string>
+    <string name="price_vehicle">Giá tiền: </string>
+
 </resources>
