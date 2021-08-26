@@ -10,6 +10,38 @@
             android:id="@+id/search_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_below="@id/search_view">
+            <EditText
+                android:id="@+id/edt_id_vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/id_vehicle"
+                />
+            <EditText
+                android:id="@+id/edt_name_vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name_vehicle"
+                />
+            <EditText
+                android:id="@+id/edt_type_vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/type_vehicle"
+                />
+            <EditText
+                android:id="@+id/edt_price_vehicle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/price_vehicle"
+                />
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/btn_add_one"
             android:layout_width="wrap_content"

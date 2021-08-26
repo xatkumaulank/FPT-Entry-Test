@@ -20,8 +20,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_TYPE_VEHICLE = "TYPE_VEHICLE";
     public static final String COLUMN_PRICE_VEHICLE = "PRICE_VEHICLE";
 
-    public static final List<Integer> idList = new ArrayList<>();
-
     public DataBaseHelper(@Nullable Context context) {
         super(context, "vehicle.db", null, 1);
     }
@@ -38,171 +36,212 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public boolean addOne(Vehicle vehicle){
+    public boolean addOne(Vehicle vehicle) {
 
-        if (idList.contains(vehicle.getId())){
-            return false;
-        }
 
         SQLiteDatabase database = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(COLUMN_NAME_VEHICLE,vehicle.getName());
-        contentValues.put(COLUMN_TYPE_VEHICLE,vehicle.getType());
-        contentValues.put(COLUMN_PRICE_VEHICLE,vehicle.getPrice());
+        contentValues.put(COLUMN_NAME_VEHICLE, vehicle.getName());
+        contentValues.put(COLUMN_TYPE_VEHICLE, vehicle.getType());
+        contentValues.put(COLUMN_PRICE_VEHICLE, vehicle.getPrice());
 
         long insert = database.insert(VEHICLE_TABLE, null, contentValues);
-        if (insert == -1){
+        if (insert == -1) {
             return false;
-        }else {
-            idList.add(vehicle.getId());
+        } else {
             return true;
         }
     }
-    public boolean deleteOne(Vehicle vehicle){
 
-        if (!idList.contains(vehicle.getId())){
-            return false;
-        }
+    public boolean deleteOne(Vehicle vehicle) {
+
         SQLiteDatabase database = this.getWritableDatabase();
         String queryString = "DELETE FROM " + VEHICLE_TABLE + " WHERE " + ID_COLUMN + " = " + vehicle.getId();
 
         Cursor cursor = database.rawQuery(queryString, null);
 
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
-    public boolean updateOne(Vehicle vehicle, String id){
-        if (!idList.contains(vehicle.getId())){
-            return false;
-        }else {
-            SQLiteDatabase database = this.getWritableDatabase();
 
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COLUMN_NAME_VEHICLE, vehicle.getName());
-            contentValues.put(COLUMN_TYPE_VEHICLE, vehicle.getType());
-            contentValues.put(COLUMN_PRICE_VEHICLE, vehicle.getPrice());
+    public boolean updateOne(Vehicle vehicle, String id) {
 
-            database.update(VEHICLE_TABLE, contentValues, "ID_VEHICLE = ?", new String[]{id});
-            return true;
-        }
+        SQLiteDatabase database = this.getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COLUMN_NAME_VEHICLE, vehicle.getName());
+        contentValues.put(COLUMN_TYPE_VEHICLE, vehicle.getType());
+        contentValues.put(COLUMN_PRICE_VEHICLE, vehicle.getPrice());
+
+        database.update(VEHICLE_TABLE, contentValues, "ID_VEHICLE = ?", new String[]{id});
+        return true;
+
     }
-    public List<Vehicle> getEveryOne(){
+
+    public List<Vehicle> getEveryOne() {
         List<Vehicle> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + VEHICLE_TABLE;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 int vehicleID = cursor.getInt(0);
                 String vehicleName = cursor.getString(1);
                 String vehicleType = cursor.getString(2);
                 int vehiclePrice = cursor.getInt(3);
 
-                Vehicle vehicle = new Vehicle(vehicleID,vehicleName,vehicleType,vehiclePrice);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, vehicleType, vehiclePrice);
                 returnList.add(vehicle);
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
 
         return returnList;
     }
-    public List<Vehicle> getEveryOneByName(){
+
+    public List<Vehicle> getEveryOneByName() {
         List<Vehicle> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + VEHICLE_TABLE + " ORDER BY " + COLUMN_NAME_VEHICLE + " DESC";
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 int vehicleID = cursor.getInt(0);
                 String vehicleName = cursor.getString(1);
                 String vehicleType = cursor.getString(2);
                 int vehiclePrice = cursor.getInt(3);
 
-                Vehicle vehicle = new Vehicle(vehicleID,vehicleName,vehicleType,vehiclePrice);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, vehicleType, vehiclePrice);
                 returnList.add(vehicle);
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
 
         return returnList;
     }
-    public List<Vehicle> getEveryOneByPrice(){
+
+    public List<Vehicle> getEveryOneByPrice() {
         List<Vehicle> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + VEHICLE_TABLE + " ORDER BY " + COLUMN_PRICE_VEHICLE + " DESC";
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 int vehicleID = cursor.getInt(0);
                 String vehicleName = cursor.getString(1);
                 String vehicleType = cursor.getString(2);
                 int vehiclePrice = cursor.getInt(3);
 
-                Vehicle vehicle = new Vehicle(vehicleID,vehicleName,vehicleType,vehiclePrice);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, vehicleType, vehiclePrice);
                 returnList.add(vehicle);
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
 
         return returnList;
     }
-    public List<Vehicle> searchEveryoneByName(String name){
+
+    public List<Vehicle> searchEveryoneByName(String name) {
         List<Vehicle> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + VEHICLE_TABLE + " WHERE " + COLUMN_NAME_VEHICLE + " like '%" + name + "%'";
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 int vehicleID = cursor.getInt(0);
                 String vehicleName = cursor.getString(1);
                 String vehicleType = cursor.getString(2);
                 int vehiclePrice = cursor.getInt(3);
 
-                Vehicle vehicle = new Vehicle(vehicleID,vehicleName,vehicleType,vehiclePrice);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, vehicleType, vehiclePrice);
                 returnList.add(vehicle);
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
 
         return returnList;
     }
-    public List<Vehicle> searchEveryOneIsBiggerThanX(int x){
+
+    public List<Vehicle> searchEveryOneIsBiggerThanX(int x) {
         List<Vehicle> returnList = new ArrayList<>();
 
         String queryString = "SELECT * FROM " + VEHICLE_TABLE + " WHERE " + COLUMN_PRICE_VEHICLE + " >= " + x;
         SQLiteDatabase database = this.getReadableDatabase();
         Cursor cursor = database.rawQuery(queryString, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()) {
             do {
                 int vehicleID = cursor.getInt(0);
                 String vehicleName = cursor.getString(1);
                 String vehicleType = cursor.getString(2);
                 int vehiclePrice = cursor.getInt(3);
 
-                Vehicle vehicle = new Vehicle(vehicleID,vehicleName,vehicleType,vehiclePrice);
+                Vehicle vehicle = new Vehicle(vehicleID, vehicleName, vehicleType, vehiclePrice);
                 returnList.add(vehicle);
 
-            }while (cursor.moveToNext());
+            } while (cursor.moveToNext());
         }
         cursor.close();
         database.close();
 
         return returnList;
+    }
+    public List<Integer> getIdOfEveryOne(){
+        List<Integer> returnList = new ArrayList<>();
+
+        String queryString = "SELECT " + ID_COLUMN +" FROM " + VEHICLE_TABLE;
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int vehicleID = cursor.getInt(0);
+
+                returnList.add(vehicleID);
+
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+
+        return returnList;
+    }
+    public Vehicle getOne(int id){
+        Vehicle returnObject = new Vehicle();
+
+        String queryString = "SELECT * FROM " + VEHICLE_TABLE + " WHERE " + ID_COLUMN + " = " + id;
+        SQLiteDatabase database = this.getReadableDatabase();
+        Cursor cursor = database.rawQuery(queryString, null);
+        if (cursor.moveToFirst()) {
+            do {
+                int vehicleID = cursor.getInt(0);
+                String vehicleName = cursor.getString(1);
+                String vehicleType = cursor.getString(2);
+                int vehiclePrice = cursor.getInt(3);
+
+                returnObject.setId(vehicleID);
+                returnObject.setName(vehicleName);
+                returnObject.setType(vehicleType);
+                returnObject.setPrice(vehiclePrice);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        database.close();
+
+        return returnObject;
     }
 }

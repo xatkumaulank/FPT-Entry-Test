@@ -15,10 +15,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
 
     Context context;
     List<Vehicle> vehicleList;
+    ItemClickListenner itemClickListenner;
 
-    public VehicleAdapter(Context context, List<Vehicle> vehicleList) {
+    public VehicleAdapter(Context context, List<Vehicle> vehicleList, ItemClickListenner itemClickListenner) {
         this.context = context;
         this.vehicleList = vehicleList;
+        this.itemClickListenner = itemClickListenner;
     }
 
     public void setData(List<Vehicle> data){
@@ -54,7 +56,7 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
         return 0;
     }
 
-    class VehicleViewHolder extends RecyclerView.ViewHolder{
+    class VehicleViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView id_vehicle, name_vehicle, type_vehicle, price_vehicle;
 
@@ -64,6 +66,12 @@ public class VehicleAdapter extends RecyclerView.Adapter<VehicleAdapter.VehicleV
             name_vehicle = itemView.findViewById(R.id.name_vehicle);
             type_vehicle = itemView.findViewById(R.id.type_vehicle);
             price_vehicle = itemView.findViewById(R.id.price_vehicle);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            itemClickListenner.onClick(v,getAdapterPosition());
         }
     }
 }
